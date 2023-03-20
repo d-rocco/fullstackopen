@@ -6,10 +6,17 @@ const Button = ({ clickHandler, name }) => {
   return <button onClick={clickHandler}>{name}</button>;
 };
 
-const Stat = (props) => {
-  if (props.stats === 0) {
-    return;
-  }
+const Buttons = ({ goodHandler, neutralHandler, badHandler }) => {
+  return (
+    <>
+      <Button clickHandler={goodHandler} name="good" />
+      <Button clickHandler={neutralHandler} name="neutral" />
+      <Button clickHandler={badHandler} name="bad" />
+    </>
+  );
+};
+
+const StatLine = (props) => {
   return (
     <div>
       {props.text} {props.num}
@@ -17,11 +24,23 @@ const Stat = (props) => {
   );
 };
 
-const History = ({ stats }) => {
+const Stats = ({ stats, good, neutral, bad }) => {
   if (stats === 0) {
-    return <h3>No feedback given</h3>;
+    return <History />;
   }
+  return (
+    <>
+      <StatLine text="good" num={good} />
+      <StatLine text="neutral" num={neutral} />
+      <StatLine text="bad" num={bad} />
+      <StatLine text="all" num={stats} />
+      <StatLine text="average" num={(good - bad) / stats} />
+      <StatLine text="positive" num={(good / stats) * 100 + " %"} />
+    </>
+  );
 };
+
+const History = () => <h3>No feedback given</h3>;
 
 const App = () => {
   // save clicks of each button to its own state
@@ -50,21 +69,13 @@ const App = () => {
   return (
     <div>
       <Header title={feedbackHeader} />
-      <Button clickHandler={handleGood} name="good" />
-      <Button clickHandler={handleNeutral} name="neutral" />
-      <Button clickHandler={handleBad} name="bad" />
-      <Header title={statisticsHeader} />
-      <History stats={allStats} />
-      <Stat stats={allStats} text="good" num={good} />
-      <Stat stats={allStats} text="neutral" num={neutral} />
-      <Stat stats={allStats} text="bad" num={bad} />
-      <Stat stats={allStats} text="all" num={allStats} />
-      <Stat stats={allStats} text="average" num={(good - bad) / allStats} />
-      <Stat
-        stats={allStats}
-        text="positive"
-        num={(good / allStats) * 100 + " %"}
+      <Buttons
+        goodHandler={handleGood}
+        neutralHandler={handleNeutral}
+        badHandler={handleBad}
       />
+      <Header title={statisticsHeader} />
+      <Stats stats={allStats} good={good} neutral={neutral} bad={bad} />
     </div>
   );
 };
