@@ -18,9 +18,10 @@ const Buttons = ({ goodHandler, neutralHandler, badHandler }) => {
 
 const StatLine = (props) => {
   return (
-    <div>
-      {props.text} {props.num}
-    </div>
+    <tr>
+      <td>{props.text}</td>
+      <td>{props.num}</td>
+    </tr>
   );
 };
 
@@ -29,14 +30,16 @@ const Stats = ({ stats, good, neutral, bad }) => {
     return <History />;
   }
   return (
-    <>
-      <StatLine text="good" num={good} />
-      <StatLine text="neutral" num={neutral} />
-      <StatLine text="bad" num={bad} />
-      <StatLine text="all" num={stats} />
-      <StatLine text="average" num={(good - bad) / stats} />
-      <StatLine text="positive" num={(good / stats) * 100 + " %"} />
-    </>
+    <table>
+      <tbody>
+        <StatLine text="good" num={good} />
+        <StatLine text="neutral" num={neutral} />
+        <StatLine text="bad" num={bad} />
+        <StatLine text="all" num={stats} />
+        <StatLine text="average" num={(good - bad) / stats} />
+        <StatLine text="positive" num={(good / stats) * 100 + " %"} />
+      </tbody>
+    </table>
   );
 };
 
