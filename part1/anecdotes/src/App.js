@@ -13,13 +13,37 @@ const App = () => {
   ];
 
   const [selected, setSelected] = useState(0);
+  const arr = Array(8).fill(0);
+  const [votes, setVotes] = useState(arr);
   const getRandomNum = () => Math.floor(Math.random() * (8 - 0) + 0);
   const pickAnecdote = () => setSelected(getRandomNum());
+  const addVote = () => {
+    const copy = [...votes];
+    copy[selected] += 1;
+    setVotes(copy);
+  };
+  const findMostVotes = () => {
+    let temp = 0;
+    let index = 0;
+    for (let i = 0; i < votes.length; i++) {
+      if (temp < votes[i]) {
+        index = i;
+        temp = votes[i];
+      }
+    }
+    return index;
+  };
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <div>{anecdotes[selected]}</div>
+      <div>has {votes[selected]} votes</div>
+      <button onClick={addVote}>vote</button>
       <button onClick={pickAnecdote}>next anecdote</button>
+      <h1>Anecdote with most votes</h1>
+      <div>{anecdotes[findMostVotes()]}</div>
+      <div>has {votes[findMostVotes()]} votes</div>
     </div>
   );
 };
