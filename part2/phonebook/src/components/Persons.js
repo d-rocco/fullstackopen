@@ -1,3 +1,5 @@
+import Person from "./Person";
+
 const Persons = ({ persons }) => {
   return (
     <>
@@ -5,14 +7,6 @@ const Persons = ({ persons }) => {
         <Person key={person.name} name={person.name} number={person.number} />
       ))}
     </>
-  );
-};
-
-const Person = (props) => {
-  return (
-    <div>
-      {props.name} {props.number}
-    </div>
   );
 };
 
