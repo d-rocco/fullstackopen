@@ -1,35 +1,10 @@
-import axios from "axios";
-import { useState } from "react";
-
-const PersonForm = ({ persons, setPersons }) => {
-  const [newName, setNewName] = useState("");
-  const [newNumber, setNewNumber] = useState("");
-  const handleNameChange = (event) => {
-    setNewName(event.target.value);
-  };
-  const handleNumberChange = (event) => {
-    setNewNumber(event.target.value);
-  };
-  const addPerson = (event) => {
-    event.preventDefault();
-    const names = persons.map((person) => `${person.name.toLowerCase()}`);
-    if (newName !== "" && !names.includes(newName.toLowerCase())) {
-      const personObj = { name: newName, number: newNumber };
-      setPersons(persons.concat(personObj));
-
-      axios
-        .post("http://localhost:3001/persons", personObj)
-        .then((response) => {
-          console.log(response);
-          setPersons(persons.concat(response.data));
-        });
-    } else {
-      alert(`${newName} is already added to phonebook!`);
-    }
-    setNewName("");
-    setNewNumber("");
-  };
-
+const PersonForm = ({
+  newName,
+  newNumber,
+  handleNameChange,
+  handleNumberChange,
+  addPerson,
+}) => {
   return (
     <form onSubmit={addPerson}>
       <div>
