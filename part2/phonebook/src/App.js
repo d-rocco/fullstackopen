@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
@@ -26,12 +25,6 @@ const App = () => {
       personsService.create(personObj).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
       });
-      // axios
-      //   .post("http://localhost:3001/persons", personObj)
-      //   .then((response) => {
-      //     console.log(response);
-      //     setPersons(persons.concat(response.data));
-      //   });
     } else {
       alert(`${newName} is already added to phonebook!`);
     }
@@ -48,11 +41,21 @@ const App = () => {
     setPersons(filtered);
   };
 
-  useEffect(() => {
+  const getPersons = () => {
     personsService.getAll().then((initialPersons) => {
       setPersons(initialPersons);
     });
-  }, []);
+  };
+
+  useEffect(getPersons, []);
+
+  const onDeleteClick = (id, name) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      console.log(id);
+
+      personsService.deletePerson(id).then(getPersons());
+    }
+  };
 
   return (
     <div>
@@ -67,7 +70,7 @@ const App = () => {
         addPerson={addPerson}
       />
       <h3>Numbers</h3>
-      <Persons persons={persons} />
+      <Persons persons={persons} onDeleteClick={onDeleteClick} />
     </div>
   );
 };
