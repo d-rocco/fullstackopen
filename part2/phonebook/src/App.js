@@ -3,6 +3,7 @@ import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
 import personsService from "./services/persons";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -15,6 +16,15 @@ const App = () => {
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value);
   };
+
+  const [addedMessage, setAddedMessage] = useState(null);
+  const addedPersonMessage = () => {
+    setAddedMessage(`Added ${newName}`);
+    setTimeout(() => {
+      setAddedMessage(null);
+    }, 5000);
+  };
+
   const addPerson = (event) => {
     event.preventDefault();
     const names = persons.map((person) => `${person.name.toLowerCase()}`);
@@ -25,6 +35,7 @@ const App = () => {
       personsService.create(personObj).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
       });
+      addedPersonMessage();
     } else {
       alert(`${newName} is already added to phonebook!`);
     }
@@ -60,6 +71,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification addedMessage={addedMessage} />
       <Filter searched={searched} handleFilterChange={handleFilterChange} />
       <h3>Add a new</h3>
       <PersonForm
