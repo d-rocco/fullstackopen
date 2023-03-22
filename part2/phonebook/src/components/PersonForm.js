@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 
 const PersonForm = ({ persons, setPersons }) => {
@@ -15,6 +16,13 @@ const PersonForm = ({ persons, setPersons }) => {
     if (newName !== "" && !names.includes(newName.toLowerCase())) {
       const personObj = { name: newName, number: newNumber };
       setPersons(persons.concat(personObj));
+
+      axios
+        .post("http://localhost:3001/persons", personObj)
+        .then((response) => {
+          console.log(response);
+          setPersons(persons.concat(response.data));
+        });
     } else {
       alert(`${newName} is already added to phonebook!`);
     }

@@ -7,13 +7,11 @@ import Filter from "./components/Filter";
 const App = () => {
   const [persons, setPersons] = useState([]);
   useEffect(() => {
-    console.log("effect");
     axios.get("http://localhost:3001/persons").then((response) => {
-      console.log("promise fulfilled");
       setPersons(response.data);
     });
   }, []);
-  console.log("render", persons.length, "notes");
+
   return (
     <div>
       <h2>Phonebook</h2>
